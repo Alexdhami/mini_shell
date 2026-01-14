@@ -50,7 +50,7 @@ _start:
 
             ; mov r13, rax ; save the pid
 
-            cmp rax, 0
+            cmp rax, 0 ; pid = 0 -> child process.
             jne .wait
 
         .execve_cmd:
