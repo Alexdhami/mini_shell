@@ -55,14 +55,9 @@ _start:
 
         .execve_cmd:
 
-            ; envp offset = 8 * (argc + 1 + 1) = 8 * (argc + 2)
-            ; argc = 1 -> 8*(1+2) = 24
-            ; argc = 2 -> 8*(2+2) = 32
-            ; argc = 3 -> 8*(3+2) = 40
-            mov rax, [rsp]           ; rax = argc (if 2)
-            add rax, 2               ; (rax = 4)
-            imul rax, 8              ; (rax = 32) | equivalent to shl rax, 3
-            lea rdx, [rsp + rax]     ; rdx = envp[0]
+            ; envp offset = argc * 8 + 16 
+            mov rax, [rsp]                ; if argc = 2
+            lea rdx, [rsp + rax * 8 + 16] ; [rsp + 2 * 8 + 16] = [rsp+ 32]
 
             ; set n_buf  = {buf, 0(NULL)}
             mov rax, buf
